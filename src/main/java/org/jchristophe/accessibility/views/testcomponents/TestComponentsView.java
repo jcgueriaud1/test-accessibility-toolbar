@@ -8,6 +8,9 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
 import com.vaadin.flow.theme.lumo.LumoUtility.Margin;
+import org.jchristophe.accessibility.components.toolbar.AccessibilityConfiguration;
+import org.jchristophe.accessibility.components.toolbar.AccessibilityToolbar;
+import org.jchristophe.accessibility.components.toolbar.ThemeVariantConfiguration;
 import org.jchristophe.accessibility.views.MainLayout;
 
 @PageTitle("Test Components")
@@ -18,19 +21,11 @@ public class TestComponentsView extends VerticalLayout {
     public TestComponentsView() {
         setSpacing(false);
 
-        Image img = new Image("images/empty-plant.png", "placeholder plant");
-        img.setWidth("200px");
-        add(img);
-
-        H2 header = new H2("This place intentionally left empty");
-        header.addClassNames(Margin.Top.XLARGE, Margin.Bottom.MEDIUM);
-        add(header);
-        add(new Paragraph("It’s a place where you can grow your own UI 🤗"));
-
-        setSizeFull();
-        setJustifyContentMode(JustifyContentMode.CENTER);
-        setDefaultHorizontalComponentAlignment(Alignment.CENTER);
-        getStyle().set("text-align", "center");
+        AccessibilityToolbar accessibilityToolbar = new AccessibilityToolbar();
+        AccessibilityConfiguration accessibilityConfiguration = new AccessibilityConfiguration();
+        accessibilityConfiguration.setThemeVariantConfiguration(ThemeVariantConfiguration.OS_PREFERRED);
+        accessibilityToolbar.setAccessibilityConfiguration(accessibilityConfiguration);
+        add(accessibilityToolbar);
     }
 
 }

@@ -12,6 +12,7 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 import org.jchristophe.accessibility.components.appnav.AppNav;
 import org.jchristophe.accessibility.components.appnav.AppNavItem;
+import org.jchristophe.accessibility.views.testcomponents.ComponentDemoView;
 import org.jchristophe.accessibility.views.testcomponents.TestComponentsView;
 import org.vaadin.lineawesome.LineAwesomeIcon;
 
@@ -53,7 +54,8 @@ public class MainLayout extends AppLayout {
         // For documentation, visit https://github.com/vaadin/vcf-nav#readme
         AppNav nav = new AppNav();
 
-        nav.addItem(new AppNavItem("Test Components", TestComponentsView.class, LineAwesomeIcon.FILE.create()));
+        nav.addItem(new AppNavItem("Toolbar view", TestComponentsView.class, LineAwesomeIcon.ACCESSIBLE_ICON.create()));
+        nav.addItem(new AppNavItem("Components Demo", ComponentDemoView.class, LineAwesomeIcon.COMPACT_DISC_SOLID.create()));
 
         return nav;
     }
