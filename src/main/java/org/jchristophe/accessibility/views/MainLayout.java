@@ -14,6 +14,7 @@ import org.jchristophe.accessibility.components.appnav.AppNav;
 import org.jchristophe.accessibility.components.appnav.AppNavItem;
 import org.jchristophe.accessibility.views.testcomponents.ComponentDemoView;
 import org.jchristophe.accessibility.views.testcomponents.TestComponentsView;
+import org.jchristophe.accessibility.views.testcomponents.ValidComponentDemoView;
 import org.vaadin.lineawesome.LineAwesomeIcon;
 
 /**
@@ -56,6 +57,7 @@ public class MainLayout extends AppLayout {
 
         nav.addItem(new AppNavItem("Toolbar view", TestComponentsView.class, LineAwesomeIcon.ACCESSIBLE_ICON.create()));
         nav.addItem(new AppNavItem("Components Demo", ComponentDemoView.class, LineAwesomeIcon.COMPACT_DISC_SOLID.create()));
+        nav.addItem(new AppNavItem("Valid Components", ValidComponentDemoView.class, LineAwesomeIcon.CHECK_CIRCLE.create()));
 
         return nav;
     }

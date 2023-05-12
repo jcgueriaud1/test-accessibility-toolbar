@@ -1,1 +1,47 @@
 @import url('./main-layout.css');
+
+.accessibility-toolbar__invalid-label {
+    border: 2px solid var(--lumo-error-color) !important;
+}
+
+dialog.accessibility-dialog {
+    background-color: var(--lumo-base-color);
+    background-clip: padding-box;
+    position: absolute;
+    bottom: 0;
+    /* right: 0; */
+    z-index: 10;
+    max-width: 90%;
+    width: 16em;
+    margin: 0;
+    height: 100vh;
+    padding: 0;
+    border: 0;
+    display: flex;
+    flex-direction: column;
+    border-right: solid 1px var(--lumo-contrast-10pct);
+}
+
+dialog.accessibility-dialog.minimized {
+    height: unset;
+    width: 150px;
+}
+
+.accessibility-toolbar {
+    flex-grow: 1;
+}
+
+dialog.accessibility-dialog.minimized .accessibility-toolbar {
+    display: none;
+}
+
+dialog.accessibility-dialog vaadin-accordion-panel {
+    padding-inline: var(--lumo-space-m);
+}
+
+.accessibility-toolbar__valid {
+    background-color: var(--lumo-success-color-10pct);
+}
+.accessibility-toolbar__invalid {
+    background-color: var(--lumo-error-color-10pct);
+}

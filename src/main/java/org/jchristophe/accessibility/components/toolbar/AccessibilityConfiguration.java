@@ -8,6 +8,7 @@ import java.io.Serializable;
 public class AccessibilityConfiguration implements Serializable {
 
     private ThemeVariantConfiguration themeVariantConfiguration;
+    private FieldStateConfiguration fieldStateConfiguration;
 
     public void setThemeVariantConfiguration(ThemeVariantConfiguration themeVariantConfiguration) {
         this.themeVariantConfiguration = themeVariantConfiguration;
@@ -15,5 +16,13 @@ public class AccessibilityConfiguration implements Serializable {
 
     public ThemeVariantConfiguration getThemeVariantConfiguration() {
         return themeVariantConfiguration;
+    }
+
+    public FieldStateConfiguration getFieldStateConfiguration() {
+        return fieldStateConfiguration;
+    }
+
+    public void setFieldStateConfiguration(FieldStateConfiguration fieldStateConfiguration) {
+        this.fieldStateConfiguration = fieldStateConfiguration;
     }
 }

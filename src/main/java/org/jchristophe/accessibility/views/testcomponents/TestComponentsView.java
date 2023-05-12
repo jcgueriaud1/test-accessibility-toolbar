@@ -1,16 +1,12 @@
 package org.jchristophe.accessibility.views.testcomponents;
 
-import com.vaadin.flow.component.html.H2;
-import com.vaadin.flow.component.html.Image;
-import com.vaadin.flow.component.html.Paragraph;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
-import com.vaadin.flow.theme.lumo.LumoUtility.Margin;
-import org.jchristophe.accessibility.components.toolbar.AccessibilityConfiguration;
-import org.jchristophe.accessibility.components.toolbar.AccessibilityToolbar;
-import org.jchristophe.accessibility.components.toolbar.ThemeVariantConfiguration;
+import org.jchristophe.accessibility.components.toolbar.AccessibilityNativeDialog;
 import org.jchristophe.accessibility.views.MainLayout;
 
 @PageTitle("Test Components")
@@ -18,14 +14,15 @@ import org.jchristophe.accessibility.views.MainLayout;
 @RouteAlias(value = "", layout = MainLayout.class)
 public class TestComponentsView extends VerticalLayout {
 
+    private AccessibilityNativeDialog accessibilityNativeDialog = new AccessibilityNativeDialog();
+    private Dialog dialog = new Dialog();
+
     public TestComponentsView() {
         setSpacing(false);
 
-        AccessibilityToolbar accessibilityToolbar = new AccessibilityToolbar();
-        AccessibilityConfiguration accessibilityConfiguration = new AccessibilityConfiguration();
-        accessibilityConfiguration.setThemeVariantConfiguration(ThemeVariantConfiguration.OS_PREFERRED);
-        accessibilityToolbar.setAccessibilityConfiguration(accessibilityConfiguration);
-        add(accessibilityToolbar);
+        add(accessibilityNativeDialog);
+        dialog.add(new Button("Close dialog", e -> dialog.close()));
+        add(new Button("Open dialog", e -> dialog.open()));
     }
 
 }

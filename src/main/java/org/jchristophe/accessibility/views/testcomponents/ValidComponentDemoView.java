@@ -32,29 +32,27 @@ import org.jchristophe.accessibility.views.MainLayout;
 import java.time.LocalDate;
 import java.util.Arrays;
 
-@PageTitle("High Contrast")
-@Route(value = "high-contrast", layout = MainLayout.class)
-public class ComponentDemoView extends VerticalLayout {
+@PageTitle("Valid components")
+@Route(value = "valid-component", layout = MainLayout.class)
+public class ValidComponentDemoView extends VerticalLayout {
 
     private AccessibilityNativeDialog accessibilityNativeDialog = new AccessibilityNativeDialog();
 
-    public ComponentDemoView() {
+    public ValidComponentDemoView() {
         setSpacing(false);
         add(accessibilityNativeDialog);
 
         TextField textField1 = new TextField();
         textField1.setLabel("Test label 1");
         add(textField1);
-        TextField textField2 = new TextField();
-        textField2.setAriaLabel("Test");
-        add(textField2);
+        TextField textField = new TextField();
+        textField.setAriaLabel("Test");
+        add(textField);
 
-        TextField textField3 = new TextField();
-        add(textField3);
         Div container = new Div();
         container.setClassName("contrast-border-samples");
 
-        var comboBox = new ComboBox<String>();
+        var comboBox = new ComboBox<String>("City");
         comboBox.setItems(Arrays.asList("Turku", "Berlin", "San Jose"));
         comboBox.setValue("Turku");
         var mscb = new MultiSelectComboBox<String>("Assign reviewers");
