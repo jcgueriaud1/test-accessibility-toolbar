@@ -15,38 +15,28 @@
  */
 package com.vaadin.base.devserver;
 
-import java.lang.ref.WeakReference;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.EnumMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.stream.Collectors;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.vaadin.base.devserver.component.ComponentMessageHandler;
+import com.vaadin.base.devserver.stats.DevModeUsageStatistics;
 import com.vaadin.base.devserver.themeeditor.ThemeEditorCommand;
+import com.vaadin.base.devserver.themeeditor.ThemeEditorMessageHandler;
 import com.vaadin.base.devserver.themeeditor.messages.BaseResponse;
+import com.vaadin.experimental.FeatureFlags;
+import com.vaadin.flow.internal.BrowserLiveReload;
+import com.vaadin.flow.server.VaadinContext;
+import com.vaadin.pro.licensechecker.BuildType;
+import com.vaadin.pro.licensechecker.LicenseChecker;
+import com.vaadin.pro.licensechecker.Product;
+import elemental.json.Json;
+import elemental.json.JsonObject;
 import org.atmosphere.cpr.AtmosphereResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.vaadin.base.devserver.stats.DevModeUsageStatistics;
-import com.vaadin.base.devserver.themeeditor.ThemeEditorMessageHandler;
-import com.vaadin.experimental.FeatureFlags;
-import com.vaadin.flow.component.Component;
-import com.vaadin.flow.dom.Element;
-import com.vaadin.flow.internal.BrowserLiveReload;
-import com.vaadin.flow.server.VaadinContext;
-import com.vaadin.flow.server.VaadinSession;
-import com.vaadin.flow.server.startup.ApplicationConfiguration;
-import com.vaadin.pro.licensechecker.BuildType;
-import com.vaadin.pro.licensechecker.LicenseChecker;
-import com.vaadin.pro.licensechecker.Product;
-
-import elemental.json.Json;
-import elemental.json.JsonObject;
+import java.lang.ref.WeakReference;
+import java.util.*;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.stream.Collectors;
 
 /**
  * {@link BrowserLiveReload} implementation class.
@@ -70,13 +60,13 @@ public class DebugWindowConnection implements BrowserLiveReload {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    private IdeIntegration ideIntegration;
 
     private ThemeEditorMessageHandler themeEditorMessageHandler;
+    private ComponentMessageHandler componentMessageHandler;
 
     static {
         IDENTIFIER_CLASSES.put(Backend.JREBEL, Collections.singletonList(
-                "org.zeroturnaround.jrebel.vaadin.VaadinPlugin"));
+                "org.zeroturnaround.jrebel.vaadin.JRebelClassEventListener"));
         IDENTIFIER_CLASSES.put(Backend.HOTSWAP_AGENT, Collections.singletonList(
                 "org.hotswap.agent.plugin.vaadin.VaadinIntegration"));
         IDENTIFIER_CLASSES.put(Backend.SPRING_BOOT_DEVTOOLS, Arrays.asList(
@@ -91,10 +81,10 @@ public class DebugWindowConnection implements BrowserLiveReload {
     DebugWindowConnection(ClassLoader classLoader, VaadinContext context) {
         this.classLoader = classLoader;
         this.context = context;
-        this.ideIntegration = new IdeIntegration(
-                ApplicationConfiguration.get(context));
         this.themeEditorMessageHandler = new ThemeEditorMessageHandler(context);
+        this.componentMessageHandler = new ComponentMessageHandler(context);
     }
+
 
     @Override
     public Backend getBackend() {
@@ -241,7 +231,7 @@ public class DebugWindowConnection implements BrowserLiveReload {
                         errorMessage);
                 send(resource, "license-check-failed", pm);
             }
-        } else if ("showComponentCreateLocation".equals(command)
+        } /*else if ("showComponentCreateLocation".equals(command)
                 || "showComponentAttachLocation".equals(command)) {
             int nodeId = (int) data.getNumber("nodeId");
             int uiId = (int) data.getNumber("uiId");
@@ -260,6 +250,10 @@ public class DebugWindowConnection implements BrowserLiveReload {
                             "Only component locations are tracked. The given node id refers to an element and not a component");
                 }
             });
+        }*/ else if (componentMessageHandler.canHandle(command, data)) {
+            BaseResponse resultData = componentMessageHandler
+                    .handleDebugMessageData(command, data);
+            send(resource, ThemeEditorCommand.RESPONSE, resultData);
         } else if (themeEditorMessageHandler.canHandle(command, data)) {
             BaseResponse resultData = themeEditorMessageHandler
                     .handleDebugMessageData(command, data);
