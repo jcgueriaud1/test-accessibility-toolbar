@@ -60,9 +60,9 @@ public class DebugWindowConnection implements BrowserLiveReload {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-
     private ThemeEditorMessageHandler themeEditorMessageHandler;
-    private ComponentMessageHandler componentMessageHandler;
+
+    private List<HasMessageHandlers> messageHandlers = new ArrayList<>();
 
     static {
         IDENTIFIER_CLASSES.put(Backend.JREBEL, Collections.singletonList(
@@ -82,7 +82,8 @@ public class DebugWindowConnection implements BrowserLiveReload {
         this.classLoader = classLoader;
         this.context = context;
         this.themeEditorMessageHandler = new ThemeEditorMessageHandler(context);
-        this.componentMessageHandler = new ComponentMessageHandler(context);
+        // this.componentMessageHandler = new ComponentMessageHandler(context);
+        messageHandlers.add(new ComponentMessageHandler(context));
     }
 
 
@@ -250,15 +251,24 @@ public class DebugWindowConnection implements BrowserLiveReload {
                             "Only component locations are tracked. The given node id refers to an element and not a component");
                 }
             });
-        }*/ else if (componentMessageHandler.canHandle(command, data)) {
+        }*/ /*else if (componentMessageHandler.canHandle(command, data)) {
             BaseResponse resultData = componentMessageHandler
                     .handleDebugMessageData(command, data);
             send(resource, ThemeEditorCommand.RESPONSE, resultData);
-        } else if (themeEditorMessageHandler.canHandle(command, data)) {
+        } */else if (themeEditorMessageHandler.canHandle(command, data)) {
             BaseResponse resultData = themeEditorMessageHandler
                     .handleDebugMessageData(command, data);
             send(resource, ThemeEditorCommand.RESPONSE, resultData);
         } else {
+            // jcg try all the handlers
+            for (HasMessageHandlers messageHandler : messageHandlers) {
+                if (messageHandler.canHandle(command, data)) {
+                    BaseResponse resultData = messageHandler
+                            .handleDebugMessageData(command, data);
+                    send(resource, ThemeEditorCommand.RESPONSE, resultData);
+                }
+            }
+
             getLogger().info("Unknown command from the browser: " + command);
         }
     }

@@ -1,18 +1,24 @@
 package org.jchristophe.accessibility.views;
 
 
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
+import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.html.Footer;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Header;
 import com.vaadin.flow.component.orderedlayout.Scroller;
 import com.vaadin.flow.router.PageTitle;
+import com.vaadin.flow.shared.ui.LoadMode;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 import org.jchristophe.accessibility.components.appnav.AppNav;
 import org.jchristophe.accessibility.components.appnav.AppNavItem;
+import org.jchristophe.accessibility.components.toolbar.AccessibilityDevToolsLoader;
 import org.jchristophe.accessibility.views.testcomponents.ComponentDemoView;
+import org.jchristophe.accessibility.views.testcomponents.SimpleInvalidDemoView;
+import org.jchristophe.accessibility.views.testcomponents.SimpleValidDemoView;
 import org.jchristophe.accessibility.views.testcomponents.TestComponentsView;
 import org.jchristophe.accessibility.views.testcomponents.ValidComponentDemoView;
 import org.vaadin.lineawesome.LineAwesomeIcon;
@@ -32,7 +38,7 @@ public class MainLayout extends AppLayout {
 
     private void addHeaderContent() {
         DrawerToggle toggle = new DrawerToggle();
-        toggle.getElement().setAttribute("aria-label", "Menu toggle");
+        toggle.setAriaLabel("Menu toggle");
 
         viewTitle = new H2();
         viewTitle.addClassNames(LumoUtility.FontSize.LARGE, LumoUtility.Margin.NONE);
@@ -58,13 +64,15 @@ public class MainLayout extends AppLayout {
         nav.addItem(new AppNavItem("Toolbar view", TestComponentsView.class, LineAwesomeIcon.ACCESSIBLE_ICON.create()));
         nav.addItem(new AppNavItem("Components Demo", ComponentDemoView.class, LineAwesomeIcon.COMPACT_DISC_SOLID.create()));
         nav.addItem(new AppNavItem("Valid Components", ValidComponentDemoView.class, LineAwesomeIcon.CHECK_CIRCLE.create()));
+        nav.addItem(new AppNavItem("Valid Simple Page", SimpleValidDemoView.class, LineAwesomeIcon.CHECK_CIRCLE.create()));
+        nav.addItem(new AppNavItem("Valid Components", SimpleInvalidDemoView.class, LineAwesomeIcon.CHECK_CIRCLE.create()));
 
         return nav;
     }
 
     private Footer createFooter() {
         Footer layout = new Footer();
-
+        layout.add(new AccessibilityDevToolsLoader());
         return layout;
     }
 

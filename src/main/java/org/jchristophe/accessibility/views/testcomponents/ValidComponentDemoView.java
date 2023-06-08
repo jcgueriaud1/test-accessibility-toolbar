@@ -11,6 +11,7 @@ import com.vaadin.flow.component.combobox.MultiSelectComboBox;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.Main;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -34,12 +35,11 @@ import java.util.Arrays;
 
 @PageTitle("Valid components")
 @Route(value = "valid-component", layout = MainLayout.class)
-public class ValidComponentDemoView extends VerticalLayout {
+public class ValidComponentDemoView extends Main {
 
     private AccessibilityNativeDialog accessibilityNativeDialog = new AccessibilityNativeDialog();
 
     public ValidComponentDemoView() {
-        setSpacing(false);
         add(accessibilityNativeDialog);
 
         TextField textField1 = new TextField();

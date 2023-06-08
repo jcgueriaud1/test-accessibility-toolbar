@@ -11,6 +11,7 @@ import com.vaadin.flow.component.combobox.MultiSelectComboBox;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.Main;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -34,12 +35,11 @@ import java.util.Arrays;
 
 @PageTitle("High Contrast")
 @Route(value = "high-contrast", layout = MainLayout.class)
-public class ComponentDemoView extends VerticalLayout {
+public class ComponentDemoView extends Main {
 
     private AccessibilityNativeDialog accessibilityNativeDialog = new AccessibilityNativeDialog();
 
     public ComponentDemoView() {
-        setSpacing(false);
         add(accessibilityNativeDialog);
 
         TextField textField1 = new TextField();
@@ -91,6 +91,8 @@ public class ComponentDemoView extends VerticalLayout {
 
     private void addSampleLine(Div container, String label, Component component) {
         var components =  new HorizontalLayout(component);
+        //<theme-editor-local-classname>
+        components.addClassName("tesrtjcg");
         if (component instanceof HasEnabled) {
             var clone = SerializationUtils.clone(component);
             ((HasEnabled) clone).setEnabled(false);

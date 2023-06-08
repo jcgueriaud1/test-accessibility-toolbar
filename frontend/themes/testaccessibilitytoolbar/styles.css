@@ -1,4 +1,14 @@
+@import "theme-editor.css";
 @import url('./main-layout.css');
+
+main {
+    padding:var(--lumo-space-m);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    box-sizing: border-box;
+}
+
 
 .accessibility-toolbar__invalid-label {
     border: 2px solid var(--lumo-error-color) !important;
